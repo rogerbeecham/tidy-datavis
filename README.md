@@ -1,2 +1,2 @@
 # tidy-datavis
-Materials from the [CDRC training session]https://www.cdrc.ac.uk/events/category/training-session/, _Explaining Trump and Brexit with Tidy Data Graphic_s_.
+Materials from the [CDRC training session](https://www.cdrc.ac.uk/events/category/training-session/]) _Explaining Trump and Brexit with Tidy Data Graphics_.
