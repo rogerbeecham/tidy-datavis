@@ -1,0 +1,173 @@
+= Explaining Trump and Brexit with Tidy Data Graphics
+By <https://www.roger-beecham.com[Roger Beecham]>
+:docinfo1: menu-include.adoc
+:icons: font
+:source-highlighter: rouge
+:source-language: R
+:task: sidebar
+:aside: NOTE
+:stem: latexmath
+:fig: TIP
+:alert: WARNING
+:specification: source,R
+
+include::menu-include.adoc[]
+
+****
+In this session you will:
+
+* open R using the RStudio Graphical User Interface (GUI)
+* install and enable R libraries and query library documentation
+* read in files
+* perform data wrangling activities (`dplyr`)
+* calculate summary statistics
+* create basic statistical graphics (`ggplot2`)
+
+****
+
+
+== Configure R, read and quickly explore the area-level datasets
+
+=== Some background to the data
+
+Results data for 2016 EU Referendum are available at Local Authority District (LAD) level and published by  https://www.electoralcommission.org.uk[The Electoral Commission]. Data are at county-level for the 2016 US Presidential election, helpfully collated by Tony McGovern and published through this https://github.com/tonmcg/County_Level_Election_Results_12-16[github repo].
+
+Population data (social demographics) from respective censuses (2011 for UK, 2010 US) as well and administrative boundary files are published via https://www.ons.gov.uk[Office for National Statistics] https://www.census.gov/en.html[US Census Bureau]. If you wish to query the US Census Bureau data yourself, check out https://hrecht.github.io/censusapi/index.html[censusapi] -- an R package, which serves as a nice wrapper to the US Census API.
+
+Specially for this session I have collated these data for you and written as a `geojson` file. The boundary data have been simplified using the https://cran.r-project.org/web/packages/rmapshaper/index.html[`rmapshaper`] library, an implementation of the popular http://mapshaper.org[`mapshaper`] tool.
+
+[{alert}]
+--
+Whilst the data used in the session are open and freely-available, they are uniquely assembled here and there are some conventions around referencing that should be observed. Post the session, if you wish to publish any analysis as a blog post or other publication, I'd be grateful if you could contact me in advance and I can advise on this.
+--
+
+=== Task 1. Load data into your R session
+
+[{specification}]
+--
+# Title: CDRC Workshop : Explaining Trump and Brexit with Tidy Data Graphics
+# Date: 02.05.2018
+# Author: <your-name>
+#####################################
+
+# Load required packages.
+# install.packages("tidyverse")
+library(tidyverse)
+# install.packages("sf") # New SimpleFeatures package for working with spatial data.
+library(sf)
+# If you are working from your own machine, install the development version of ggplot2 to access geom_sf().
+# devtools::install_github("tidyverse/ggplot2")
+library(ggplot2)
+# If you are working from a lab machine, load tmap.
+# install.packages("tmap")
+library(tmap)
+
+# Set ggplot2 theme_minimal() with Avenir Book font (if you have it).
+theme_set(theme_minimal())
+
+# Read in the two datasets which have been written to geojson.
+session_url <- "http://homepages.see.leeds.ac.uk/~georjb/tidy_datavis/"
+trump <- st_read(paste0(session_url, "./data/trump.geojson"), crs=2163)
+brexit <- st_read(paste0(session_url, "./data/brexit.geojson"), crs=27700)
+--
+
+[{task}]
+--
+[horizontal]
+Instructions:: In the editor pane of RStudio, create a new R script and copy in the code and comments in the block above. Execute by clicking `run` or `cmd+r` (Mac) `ctr+r` (Windows). Then save the R script to a dedicated directory with an appropriate name.
+--
+
+Notice that the Trump and Brexit datasets now appear under the `Data` field of the _Environment_ pane. They are stored as a _data frame_ -- a spreadsheet-like representation where rows correspond to individual observations and columns act as variables or fields. You can inspect a data frame as you would a spreadsheet by typing `View(<dataframe-name>)` or by pointing and clicking on the named data frame in the _Environment_ pane. You can also get a quick view on a data frame's contents by typing `glimpse(<dataframe-name>)`. Notice that the right-most field (`geometry`) is a special case. This is a `list-column` and stores pairs of coordinates representing county and LAD boundaries. Storing geometry data in this way follows a widely adopted standard and complements the syntax and scripting style of the libraries used in this session. For those familiar with empirically-focussed/computational statistics, `list-cols` are very useful for organising re-samples for bootstraps.
+
+[{aside}]
+--
+If you are new to R, the `#` syntax might appear odd -- you have probably guessed but these represent *comments* that are not compiled and interpreted on `run`.
+--
+
+=== Task 2. Quickly check on the geographies
+
+You'll be pleased to know that I've done most of the necessary data cleaning -- this was mostly a case of correcting for outdated administrative codes. Nevertheless, before progressing too far it is worth checking  the geographies we are studying. We will do so here by generating sets of summary statistics and using data manipulation functions from the _dplyr_ package -- part of the _Tidyverse_ (if this is new to you, quickly scan the the link:r-studio.html[R and RStudio] section).
+
+The code below uses _dplyr_ functions and _ggplot2_ to quickly inspect the US geographies over which the results and demographic data are aggregated.
+
+[{specification}]
+--
+# Count the number of US counties within states.
+trump %>%
+  group_by(state_name) %>%
+    summarise(num_counties=n()) %>%
+     arrange(desc(num_counties)) %>%
+      View()
+
+# Calculate the median population size of US counties and GB LAs.
+trump %>%
+  summarise(median_pop=median(total_pop)) %>%
+    pull(median_pop)
+
+# Summary statistics can sometimes hide important structure. Let's create a histogram using ggplot2.
+trump %>%
+  ggplot(aes(x=total_pop, stat="bin"))+
+  geom_histogram()
+
+# Pop size by US county follows a lognormal distribution.
+# Most likely there are a very small number of very urban, densely populated counties.
+# We can investigate this by finding top 10 largest counties and 10 smallest counties.
+trump %>%
+  select(county_name, state_name, total_pop) %>%
+    top_n(10, total_pop) %>%
+      arrange(desc(total_pop)) %>%
+        View()
+
+# Another way of doing this: scatterplot of pop_density and county population size. Given
+# the lognormal earlier we log-transform the pop_density variable before plotting.
+trump %>%
+  ggplot(aes(x=log(pop_density), y=log(total_pop)))+
+  geom_point(pch=21, alpha=0.2)
+--
+
+
+[{task}]
+--
+[horizontal]
+Instructions:: Add the code block to your R script, then Run each snippet separately and inspect the output.
+
+Optional task:: We are going to assume equivalence between US counties and states and GB LADs and regions. Given this, you may wish to repeat these summaries on the Brexit dataset -- e.g. interrogate the population size of LADs, find out how many LADs are typically contained within regions.
+--
+
+[{aside}]
+--
+The design philosophy behind libraries that form the _Tidyverse_ is to provide a narrow set functions to support commonly used data analysis routines. Functions that form the _dplyr_ library (core to the _Tidyverse_) are named with verbs that neatly describe their purpose — `filter(), select(), arrange(), group_by(), summarise()` and more. Though the syntax looks a little strange the pipe (`%>%`) is a particularly handy operator that allows calls to these functions to be chained together.
+--
+
+
+=== Task 3. Generate an early view on the results data
+
+Let's take a quick look at the area-level voting for Brexit and Trump -- this forms the _outcome_ for our study that we explore and ultimately aim to explain. Again I've created the variables you need for this.
+
+* _net_trump_ : net two-party vote share in favour of Trump by county. This is a signed value -- we subtract the share of the vote for Clinton from that for Trump. Where that value is positive the county is for Trump; where it is negative for Clinton.
+
+*  _shift_trump_ : the two-party vote share for Trump in 2016, net of that same vote share for Romney in 2012. This captures movement towards or away from Trump given historical levels of Republicanism in a county. This feels closer to the Brexit vote (Brexit didn't divide neatly along traditional political lines).
+
+* _net_leave_ : the share of Leave vote in each LAD net of the Remain vote.
+
+After the break, we'll do plenty more investigation in to these variables.  For the time being, let's quickly look at how vote shares distribute.
+
+[{specification}]
+--
+# Generate a histogram on the net_trump variable.
+trump %>%
+  ggplot(aes(x=net_trump))+
+  geom_histogram()+
+  geom_vline(aes(xintercept = 0))+
+  labs(y="num counties")
+
+--
+
+[{task}]
+--
+[horizontal]
+Instructions:: Add the code block to your R script and run. Produce a histogram of the `shift_trump` and `net_leave` vote (e.g. the same ggplot2 specification but applied to the Brexit dataset).
+--
+
+--
+[small]#Content by http://www.roger-beecham.com[Roger Beecham] | 2018 | Licensed under https://creativecommons.org/licenses/by/4.0/[Creative Commons BY 4.0].#

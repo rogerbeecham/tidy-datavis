@@ -1,0 +1,95 @@
+= Explaining Trump and Brexit with Tidy Data Graphics
+By <https://www.roger-beecham.com[Roger Beecham]>
+:docinfo1: menu-include.adoc
+:icons: font
+:source-highlighter: rouge
+:source-language: R
+:task: sidebar
+:aside: NOTE
+:stem: latexmath
+:fig: TIP
+:alert: WARNING
+:specification: source,R
+
+== Day Outline
+
+* course **web page**
+* **purpose** (visual data analysis)
+    ** how visualization can (should) be embedded in analysis workflow
+    ** rather than focus on _how_ to generate visualizations, we'll cover _why_ -- what those vis's offer to your analysis... but also the why around the code used to produce them -- because I think the way in which we're rapidly interacting with code, data and viusals informs the data analysis rather than detracts from it. I think that is _new_ to the type of workflows using point-and-click software.
+    ** to do this we need to delve a little into vis theory -- _lecture_
+    ** but also we need a real data analysis problem -- which is why this is focussed on a single and substantive area rather than synthetic data
+* **organisation**
+    ** start -- lecture on this vis theory
+    ** chunks in the day loosely allocated to different categories of data analysis activity
+    ** session will **not** teach basics of R programming
+    ** session **will** introduce you to a visual analysis workflow that I think is necessary for modern data analysis. In R that means using Hadley Wickham's _Tidyverse_
+    ** diverse group -- complete code blocks largely -- that can be cut and pasted. though do force some thinking in places
+    ** no idea if the content is too much. if it's too little then you're probably not exploring the data sufficiently. though there is loads more that I wanted to put in so I can share.
+    ** we are luxuriously resourced -- I expect to be floating round answering individual questions but I can do some group/live coding if that helps.
+* **data**
+    ** Although all freely available I uniquely assembled it for this session -- and it took a bit of doing.
+    ** There are some conventions around citing this -- so do contact me in advance if you wish to publish on any of it.
+
+== Lecture
+
+=== slide 1: Purpose
+
+* Identify some key visualization theory
+* Demonstrate how visualization frameworks/toolkits increasingly incorporate this theory into their * design
+* And how this is exciting for those doing data analysis — who see visualization as a means to an end
+* Allow visualization to be genuinely embedded within data analysis worflows….
+
+* ...When you think about visualization
+
+=== slide 2: Meticulously created interactive information graphics
+
+=== slide 3: Complicated looking software written by formidable computer scientists
+
+=== slide 4: Carefully authored pixel rich displays
+
+=== slide 5: Where does that leave Data Scientists?
+
+* Those who need to generate statistical graphics quickly , maybe with a bit of interaction — to reveal structure in datas, evaluate model outputs, to inspect distributions….
+
+* Part technology — part how we think about data….
+
+=== slide 6: Technology
+
+* vega
+  ** Framework built on top of d3.
+  ** you can describe data visualizations in a JSON format instead of writing D3/JavaScript code
+  ** do so using concise specification
+  ** Specify mapping of data to visuals and omit low-level details
+  ** Concise specifications — analysis patterns that are re-usable.
+
+
+* ggplot2 difficult and frustrating?
+
+* It’s not -- it’s a coherent and small-vocabulary framework
+
+* To use it, need an understanding of the theory on which it’s based
+
+=== slide 7: Tufte
+
+* visualisation is about carefully think through the data available to you and properties in order to create data rich graphics
+
+=== slide 8: Effective graphics
+
+* 4-7
+
+
+=== slide 9-12: Washington Post
+
+=== slide 13: Infovis: language for supporting design
+
+=== slide 14-16: Infovis: language for supporting design
+
+=== slide 18: GOG: a cohernt mechanism for describing graphics
+
+* Le Wilkinson — statistician and cs GoGs in late 90s
+* Graphics have an underlying structure — layers
+* If we can systematically describe that structure  then generating graphics becomes  a case of manipulating layers in different ways
+
+
+=== slide 19-20: Modern VIS frameworks built on this

@@ -1,0 +1,18 @@
+// menu-include.adoc
+
+// Define macros for each HTML file referenced in the menu
+:home: index.html[Home]
+:datavis: data-vis.html[Data Visualization]
+:rstudio: r-studio.html[R and RStudio]
+:code1: code1.html[Code #1]
+:code2: code2.html[Code #2]
+:code3: code3.html[Code #3]
+
+// Create the menu as an AsciiDoc table, css class name in brackets
+[.main-menu]
+* link:{home}
+* link:{datavis}
+* link:{rstudio}
+* link:{code1}
+* link:{code2}
+* link:{code3}

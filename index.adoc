@@ -1,0 +1,56 @@
+= Explaining Trump and Brexit with Tidy Data Graphics
+By <https://www.roger-beecham.com[Roger Beecham]>
+:docinfo1: menu-include.adoc
+:icons: font
+:source-highlighter: coderay
+:task: sidebar
+:aside: NOTE
+:stem: latexmath
+:fig: TIP
+:specification: source,R
+
+include::menu-include.adoc[]
+
+[#outline]
+== Outline
+[cols="20%,80%", width="90%"]
+|====
+|0930-1030 | Lecture : Visual data analysis -- why and how
+|1030-1130 | `Code #1` : Read-in and organise the area-level voting datasets
+|_1130-1200_ | _Coffee and questions_
+|1200-1300 | `Code #2` : Generate graphics to expose structure in area-level voting
+|_1300-1400_ | _Lunch_
+|1400-1615 | `Code #3` : Generate graphics to evaluate explanations behind that structure
+|1615-1630   | Wrap up : How to extend what you've learnt |
+|====
+
+== Introduction
+
+Welcome to this workshop on _Trump, Brexit and Tidy Data Graphics_. From reading the course abstract, you will have hopefully noticed that this is a practical-focussed session aimed at covering the fundamentals of _visual_ data analysis (as well as a little about the two political events). The genesis for the session came from a realisation that whilst there is plenty of excellent _how-to_ material on using R and http://ggplot2.tidyverse.org/index.html[ggplot2] for Data Visualization, there are comparatively few examples explaining _why_ data graphics are created. The _why_ aspect can be interpreted in two ways: _why_ the graphics themselves (the insight they add); but also the _why_ around the code used to produce them. This latter point is an important one -- my thesis is that the process of writing code to describe graphics and data transformations encourages, records _and communicates_ deep analytic thinking in a similar way to the report writing process. Check out https://beta.observablehq.com[Observable] and this https://medium.com/@mbostock/a-better-way-to-code-2b1d2876a3a0[explanatory post] for an interesting take on this.
+
+Through the session you will:
+
+* *apply* high-level functions for curating https://en.wikipedia.org/wiki/Tidy_data[Tidy data] in R
+* *appreciate* some key principles of good data visualization design
+* *generate* data graphics using a consistent and principled vocabulary (ggplot2)
+
+You will do so by completing a visual analysis of datasets describing the 2016 EU Referendum in Great Britain and 2016 Presidential Election in the US. The GB data are aggregated to Local Authority District level (of which there are 380) and the US data aggregated to county (of which there are 3,108 in mainland US). Along with the results data, you will be provided with some area-level socio-demographic variables.
+
+Through your visual data analysis, you will:
+
+* *expose* (geo-spatial) structure in area-level voting behaviour
+* *evaluate* the extent to which area-level demographics explain area-level variation in the vote
+* *explore* whether explanations vary for different parts of the UK and US
+
+== Workshop Organisation
+
+You will have noticed the day <<outline>> above. We're a reasonably mixed group in terms of experience. I have therefore kept the practical sessions (labelled `code #<no.>`) quite 'scripted', with mostly full code blocks that you can use directly when generating outputs. More experienced data analysts and R users may wish to kick on and re-configure data graphics of their own. This activity is encouraged. However, I'd really like everyone to be working on the same parts of the dataset at roughly the same time -- the morning and afternoon activities have been designed with this in mind.
+
+The practical sessions do not cover the fundamentals of the R syntax and data structures --  http://r4ds.had.co.nz[R for Data Science] is probably the most efficient introduction that will also compliment what is covered in these sessions. If you know very little of R, and have never opened https://www.rstudio.com[RStudio], I've put together a quick introductory page:
+
+* link:r-studio.html[R and RStudio]
+
+
+
+---
+[small]#Content by http://www.roger-beecham.com[Roger Beecham] | 2018 | Licensed under https://creativecommons.org/licenses/by/4.0/[Creative Commons BY 4.0].#
